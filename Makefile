@@ -6,7 +6,7 @@
 #    By: thibautpierron <thibautpierron@student.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/21 11:32:23 by tpierron          #+#    #+#              #
-#    Updated: 2017/11/15 12:03:48 by thibautpier      ###   ########.fr        #
+#    Updated: 2017/11/17 21:39:54 by thibautpier      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@
 NAME = openCircleCode
 
 CC = clang++
-SRC =	main.cpp
+SRC =	src/Reader.cpp \
+		main.cpp
 
 
 FLAGS = -lopencv_highgui -lopencv_core -lopencv_imgproc
@@ -30,6 +31,7 @@ OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 all: $(NAME)
 $(OBJ_PATH)%.o: %.cpp
 	@mkdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
+	@mkdir $(OBJ_PATH)/src 2> /dev/null || echo "" > /dev/null
 	$(CC) -o $@ -c $(PATHS) $< -std=c++11
 
 $(NAME): $(OBJ)
