@@ -10,13 +10,13 @@ int main(int argc, char** argv) {
   cv::Mat src = cv::imread( argv[1], 1 );
   Reader reader(argv[1]);
 
-  cv::Point center = reader.getCirclesCenter();
-  std::vector<double> radius = reader.getCirclesRadius();
+  // cv::Point center = reader.getCirclesCenter();
+  // std::vector<double> radius = reader.getCirclesRadius();
   std::vector<cv::Point> points = reader.getPoints();
 
-  for (unsigned int i = 0; i < radius.size(); i++) {
-    circle( src, center, radius[i], cv::Scalar(0, 0, 255), 3, 8, 0 );
-  }
+  // for (unsigned int i = 0; i < radius.size(); i++) {
+  //   circle( src, center, radius[i], cv::Scalar(0, 0, 255), 3, 8, 0 );
+  // }
 
   for (unsigned int i = 0; i < points.size(); i++) {
     circle( src, points[i], 3, cv::Scalar(0, 255, 0), 3, 8, 0 );

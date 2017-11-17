@@ -12,6 +12,7 @@ Reader::Reader(std::string file) {
 	findCircles();
 	
 	findPoints();
+	extractBinary();
 }
 
 Reader::~Reader() {};
@@ -24,7 +25,7 @@ void    Reader::detectHooks() {
 	}
 }
 
-void	Reader::findCircles() {
+void	Reader::findCircles() { /////NAIVE APPROCHE
 	std::vector<float> crds;
 	
 	for (unsigned int i = 0; i < hooks.size(); i++) {
@@ -54,6 +55,19 @@ void	Reader::findPoints() {
 			points.push_back(p);
 		}
 	}
+}
+
+void	Reader::extractBinary() {
+	for (unsigned int i = 0; i < points.size(); i++) {
+		cv::Scalar intensity = img.at<uchar>(points[i]);
+		bool b = (intensity.val[0] >= 150) ? true : false; /////NAIVE CONDITION
+		values.push_back(b);
+	}
+
+	// for (unsigned int i = 0; i < values.size(); i++) {
+	// 	std::cout << values[i];
+	// }
+	// std::cout << std::endl;
 }
 
 cv::Point			Reader::getCirclesCenter() const {

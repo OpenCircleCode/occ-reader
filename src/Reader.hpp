@@ -23,6 +23,7 @@ class Reader {
 		void			detectHooks();
 		void			findCircles();
 		void			findPoints();
+		void			extractBinary();
 		
 		cv::Mat						img;
 		std::vector<cv::Vec3f>	hooks;
@@ -30,6 +31,7 @@ class Reader {
 		std::vector<double>		circlesRadius;
 
 		std::vector<cv::Point>	points;
+		std::vector<bool>		values;
 };
 
 #endif
