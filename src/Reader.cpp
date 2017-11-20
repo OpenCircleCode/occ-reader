@@ -15,7 +15,21 @@ Reader::Reader(std::string file) {
 	extractBinary();
 }
 
-Reader::~Reader() {};
+Reader::Reader() {}
+
+Reader::~Reader() {}
+
+void		Reader::readFromImg(cv::Mat image) {
+	img = image;
+	GaussianBlur( img, img, cv::Size(9, 9), 2, 2 );
+	detectHooks();
+	if (hooks.size() <= 1)
+		return;
+	findCircles();
+	
+	findPoints();
+	extractBinary();
+}
 
 void    Reader::detectHooks() {
 	cv::HoughCircles( img, hooks, CV_HOUGH_GRADIENT, 1, 400, 200, 40, 10, 30 );
@@ -33,7 +47,7 @@ void	Reader::findCircles() { /////NAIVE APPROCHE
         	crds.push_back(hooks[i][0]);
       	if (find(crds.begin(), crds.end(), hooks[i][1]) == crds.end())
         	crds.push_back(hooks[i][1]);
-		}
+	}
 		
 	std::sort(crds.begin(), crds.end());
 	circlesCenter.x = (crds[2] - crds[0]) / 2 + crds[0];
@@ -80,4 +94,16 @@ std::vector<double>		Reader::getCirclesRadius() const {
 
 std::vector<cv::Point>	Reader::getPoints() const {
 	return points;
+}
+
+std::string		Reader::getString() const {
+	std::string str;
+	for (unsigned int i = 0; i < values.size(); i++) {
+		str.append(to_string(values[i]));
+	}
+	return str;
+}
+
+std::vector<cv::Vec3f>	Reader::getHooks() const {
+	return this->hooks;
 }

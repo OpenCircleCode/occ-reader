@@ -11,15 +11,18 @@
 
 class Reader {
     public:
+		Reader();
         Reader(std::string file);
 		~Reader();
 
+		void					readFromImg(cv::Mat);
 		cv::Point				getCirclesCenter() const;
 		std::vector<double>		getCirclesRadius() const;
 		std::vector<cv::Point>	getPoints() const;
+		std::string				getString() const;
+		std::vector<cv::Vec3f>	getHooks() const;
 
     private:
-		Reader();
 		void			detectHooks();
 		void			findCircles();
 		void			findPoints();
