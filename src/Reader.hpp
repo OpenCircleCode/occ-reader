@@ -20,16 +20,18 @@ class Reader {
 		std::vector<double>		getCirclesRadius() const;
 		std::vector<cv::Point>	getPoints() const;
 		std::string				getString() const;
-		std::vector<cv::Vec3f>	getHooks() const;
+		std::vector<cv::Vec3f>	getAnchors() const;
 
     private:
-		void			detectHooks();
+		void			detectAnchors();
 		void			findCircles();
 		void			findPoints();
 		void			extractBinary();
 		
-		cv::Mat						img;
-		std::vector<cv::Vec3f>	hooks;
+		cv::Mat					img;
+		double					width;
+		double					height;
+		std::vector<cv::Vec3f>	anchors;
 		cv::Point				circlesCenter;
 		std::vector<double>		circlesRadius;
 
