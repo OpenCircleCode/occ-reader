@@ -16,17 +16,21 @@ class Reader {
 		~Reader();
 
 		void					readFromImg(cv::Mat);
+
 		cv::Point				getCirclesCenter() const;
 		std::vector<double>		getCirclesRadius() const;
 		std::vector<cv::Point>	getPoints() const;
-		std::string				getString() const;
+		std::string				getBinary() const;
+		std::string				getHash() const;
 		std::vector<cv::Vec3f>	getAnchors() const;
+		cv::Mat					getWorkingImg() const;
 
     private:
 		void			detectAnchors();
 		void			findCircles();
 		void			findPoints();
 		void			extractBinary();
+		void			binaryToHash();
 		
 		cv::Mat					img;
 		double					width;
@@ -37,6 +41,9 @@ class Reader {
 
 		std::vector<cv::Point>	points;
 		std::vector<bool>		values;
+		std::string				binary;
+		std::string				hash;
+		std::string				string;
 };
 
 #endif

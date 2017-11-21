@@ -10,12 +10,13 @@ Reader::Reader(std::string file) {
 		return;
 	}
 
-    GaussianBlur( img, img, cv::Size(9, 9), 2, 2 );
+    // GaussianBlur( img, img, cv::Size(9, 9), 2, 2 ); /// USEFULL?
     detectAnchors();
 	findCircles();
 	
 	findPoints();
 	extractBinary();
+	binaryToHash();
 }
 
 Reader::Reader() {}
@@ -24,14 +25,13 @@ Reader::~Reader() {}
 
 void		Reader::readFromImg(cv::Mat image) {
 	img = image;
-	GaussianBlur( img, img, cv::Size(9, 9), 2, 2 );
+	// GaussianBlur( img, img, cv::Size(9, 9), 2, 2 );
 	detectAnchors();
-	if (anchors.size() <= 1)
-		return;
 	findCircles();
 	
 	findPoints();
 	extractBinary();
+	binaryToHash();
 }
 
 void    Reader::detectAnchors() {
@@ -82,27 +82,41 @@ void	Reader::findCircles() {
 
 void	Reader::findPoints() {
 	for (unsigned int i = 0; i < circlesRadius.size(); i++) {
-		for (int j = 90; j < 450; j += STEP_ANGLE) {
+		for (int j = 450; j > 90; j -= STEP_ANGLE) {
 			cv::Point p;
 			p.x = circlesRadius[i] * sin(j * PI / 180) + circlesCenter.x;
 			p.y = circlesRadius[i] * cos(j * PI / 180) + circlesCenter.y;
 			points.push_back(p);
 		}
 	}
+	points.erase(points.begin() + 99);
+	points.erase(points.begin() + 90);
+	points.erase(points.begin() + 81);
+	points.erase(points.begin() + 72);
 }
 
 void	Reader::extractBinary() {
 	for (unsigned int i = 0; i < points.size(); i++) {
-		cv::Scalar intensity = img.at<uchar>(points[i]);
-		std::cout << intensity.val[0] << std::endl;
-		bool b = (intensity.val[0] >= 150) ? true : false; /////NAIVE CONDITION
+		cv::Scalar color = img.at<unsigned char>(points[i].y, points[i].x);
+		bool b = (color.val[0] <= 200) ? true : false; /////NAIVE CONDITION
 		values.push_back(b);
 	}
+}
 
-	// for (unsigned int i = 0; i < values.size(); i++) {
-	// 	std::cout << values[i];
-	// }
-	// std::cout << std::endl;
+void	Reader::binaryToHash() {
+	std::string str = getBinary();
+
+    std::stringstream sstream(str);
+    // std::string output;
+    while(sstream.good())
+    {
+        std::bitset<8> bits;
+        sstream >> bits;
+        char c = char(bits.to_ulong());
+        hash += c;
+    }
+
+	// std::cout << output << std::endl;
 }
 
 cv::Point			Reader::getCirclesCenter() const {
@@ -117,7 +131,7 @@ std::vector<cv::Point>	Reader::getPoints() const {
 	return points;
 }
 
-std::string		Reader::getString() const {
+std::string		Reader::getBinary() const {
 	std::string str;
 	for (unsigned int i = 0; i < values.size(); i++) {
 		str.append(to_string(values[i]));
@@ -125,6 +139,14 @@ std::string		Reader::getString() const {
 	return str;
 }
 
+std::string		Reader::getHash() const {
+	return hash;
+}
+
 std::vector<cv::Vec3f>	Reader::getAnchors() const {
 	return this->anchors;
+}
+
+cv::Mat					Reader::getWorkingImg() const {
+	return this->img;
 }
