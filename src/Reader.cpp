@@ -13,6 +13,7 @@ Reader::Reader(std::string file) {
     // GaussianBlur( img, img, cv::Size(9, 9), 2, 2 ); /// USEFULL?
     detectAnchors();
 	findCircles();
+	findPointsNbr();
 	
 	findPoints();
 	extractBinary();
@@ -78,6 +79,34 @@ void	Reader::findCircles() {
 	circlesRadius.push_back(thirdRadius + 1 * thirdRadius / 9);
 	circlesRadius.push_back(thirdRadius);
 	circlesRadius.push_back(thirdRadius - 1 * thirdRadius / 9);
+}
+
+void	Reader::findPointsNbr() {
+	std::string binaryNbr;
+
+	for (unsigned int i = 0; i < anchors.size(); i++) {
+		cv::Point p(anchors[i][1], anchors[i][0]);
+		cv::Scalar color = img.at<unsigned char>(p);
+		bool b = (color.val[0] <= 200) ? true : false;
+		b ? binaryNbr.append("1") : binaryNbr.append("0");
+	}
+
+	if (binaryNbr.compare("1111") == 0)
+		binaryNbr = 36;
+	else if (binaryNbr.compare("1110") == 0)
+		binaryNbr = 40;
+	else if (binaryNbr.compare("1101") == 0)
+		binaryNbr = 45;
+	else if (binaryNbr.compare("1100") == 0)
+		binaryNbr = 60;
+	else if (binaryNbr.compare("1011") == 0)
+		binaryNbr = 72;
+	else if (binaryNbr.compare("1010") == 0)
+		binaryNbr = 90;
+	else if (binaryNbr.compare("1001") == 0)
+		binaryNbr = 120;
+	else 
+		binaryNbr = 36;
 }
 
 void	Reader::findPoints() {

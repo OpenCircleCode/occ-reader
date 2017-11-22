@@ -29,6 +29,7 @@ class Reader {
 		void			detectAnchors();
 		void			findCircles();
 		void			findPoints();
+		void			findPointsNbr();
 		void			extractBinary();
 		void			binaryToHash();
 		
@@ -36,6 +37,7 @@ class Reader {
 		double					width;
 		double					height;
 		std::vector<cv::Vec3f>	anchors;
+		unsigned int			pointsNbr;
 		cv::Point				circlesCenter;
 		std::vector<double>		circlesRadius;
 
