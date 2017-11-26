@@ -8,7 +8,7 @@
 # include "opencv2/imgproc/imgproc.hpp"
 
 # define PI 3.14159265
-# define STEP_ANGLE 10
+// # define STEP_ANGLE 10
 
 class Reader {
     public:

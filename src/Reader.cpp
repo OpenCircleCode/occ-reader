@@ -131,8 +131,9 @@ void	Reader::findPointsNbr() {
 }
 
 void	Reader::findPoints() {
+	int step_angle = 360 / pointsNbr;
 	for (unsigned int i = 0; i < circlesRadius.size(); i++) {
-		for (int j = 450; j > 90; j -= STEP_ANGLE) {
+		for (int j = 450; j > 90; j -= step_angle) {
 			cv::Point p;
 			p.x = circlesRadius[i] * sin(j * PI / 180) + circlesCenter.x;
 			p.y = circlesRadius[i] * cos(j * PI / 180) + circlesCenter.y;
