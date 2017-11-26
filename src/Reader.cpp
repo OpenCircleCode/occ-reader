@@ -11,7 +11,33 @@ Reader::Reader(std::string file) {
 	}
 
     // GaussianBlur( img, img, cv::Size(9, 9), 2, 2 ); /// USEFULL?
-    detectAnchors();
+	detectAnchors();
+	if (anchors.size() != 4)
+		return;
+
+	findCircles();
+	findPointsNbr();
+	
+	findPoints();
+	extractBinary();
+	binaryToHash();
+}
+
+Reader::Reader(cv::Mat frame) : img(frame) {
+	// img = cv::imread(file, CV_LOAD_IMAGE_GRAYSCALE);
+	width = img.cols;
+	height = img.rows;
+
+	if (!img.data) {
+		std::cerr << "can not load frame" << std::endl;
+		return;
+	}
+
+    GaussianBlur( img, img, cv::Size(9, 9), 2, 2 ); /// USEFULL?
+	detectAnchors();
+	if (anchors.size() != 4)
+		return;
+
 	findCircles();
 	findPointsNbr();
 	
@@ -38,7 +64,7 @@ void		Reader::readFromImg(cv::Mat image) {
 void    Reader::detectAnchors() {
 	cv::HoughCircles( img, anchors, CV_HOUGH_GRADIENT, 1, height / 2, 200, 40, height / 80, height / 20 );
 	if (anchors.size() <= 1) {
-		std::cerr << "Anchor detection failed" << std::endl;
+	// std::cerr << "Anchor detection failed" << std::endl;
 		return;
 	}
 }

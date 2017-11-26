@@ -12,7 +12,8 @@
 class Reader {
     public:
 		Reader();
-        Reader(std::string file);
+		Reader(std::string file);
+		Reader(cv::Mat frame);
 		~Reader();
 
 		void					readFromImg(cv::Mat);
