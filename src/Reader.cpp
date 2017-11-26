@@ -1,5 +1,15 @@
 #include "Reader.hpp"
 
+std::map<std::string, unsigned int> Reader::anchorsBinaryMap = {
+	{"1111", 36},
+	{"1110", 40},
+	{"1101", 45},
+	{"1100", 60},
+	{"1011", 72},
+	{"1010", 90},
+	{"1001", 12}
+};
+
 Reader::Reader(std::string file) {
 	img = cv::imread(file, CV_LOAD_IMAGE_GRAYSCALE);
 	width = img.cols;
@@ -62,7 +72,7 @@ void		Reader::readFromImg(cv::Mat image) {
 }
 
 void    Reader::detectAnchors() {
-	cv::HoughCircles( img, anchors, CV_HOUGH_GRADIENT, 1, height / 2, 200, 40, height / 80, height / 20 );
+	cv::HoughCircles( img, anchors, CV_HOUGH_GRADIENT, 1, 400 / 2, 200, 40, 400 / 80, 400 / 20 );
 	if (anchors.size() <= 1) {
 	// std::cerr << "Anchor detection failed" << std::endl;
 		return;
@@ -117,22 +127,7 @@ void	Reader::findPointsNbr() {
 		b ? binaryNbr.append("1") : binaryNbr.append("0");
 	}
 
-	if (binaryNbr.compare("1111") == 0)
-		binaryNbr = 36;
-	else if (binaryNbr.compare("1110") == 0)
-		binaryNbr = 40;
-	else if (binaryNbr.compare("1101") == 0)
-		binaryNbr = 45;
-	else if (binaryNbr.compare("1100") == 0)
-		binaryNbr = 60;
-	else if (binaryNbr.compare("1011") == 0)
-		binaryNbr = 72;
-	else if (binaryNbr.compare("1010") == 0)
-		binaryNbr = 90;
-	else if (binaryNbr.compare("1001") == 0)
-		binaryNbr = 120;
-	else 
-		binaryNbr = 36;
+	pointsNbr = anchorsBinaryMap[binaryNbr];
 }
 
 void	Reader::findPoints() {

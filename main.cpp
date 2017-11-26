@@ -67,7 +67,7 @@ int main() {
       circle( cameraFrame, p2, 20, cv::Scalar(0, 0, 255), 3, 8, 0 );
     }
 
-    std::cout << anchors.size() << std::endl;
+    // std::cout << anchors.size() << std::endl;
 
 		n = anchors.size();
 		if (anchors.size() == 4) {

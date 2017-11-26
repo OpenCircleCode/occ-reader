@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <vector>
+# include <map>
 # include "opencv2/highgui/highgui.hpp"
 # include "opencv2/imgproc/imgproc.hpp"
 
@@ -47,6 +48,8 @@ class Reader {
 		std::string				binary;
 		std::string				hash;
 		std::string				string;
+
+		static std::map<std::string, unsigned int> anchorsBinaryMap;
 };
 
 #endif
