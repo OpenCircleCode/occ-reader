@@ -72,7 +72,10 @@ int main() {
 		n = anchors.size();
 		if (anchors.size() == 4) {
 			for (unsigned int i = 0; i < points.size(); i++) {
-				circle( cameraFrame, points[i], 3, cv::Scalar(0, 0, 255), 3, 8, 0 );
+        if (i == 0)
+          circle( cameraFrame, points[i], 3, cv::Scalar(0, 255, 255), 3, 8, 0 );
+        else
+				  circle( cameraFrame, points[i], 3, cv::Scalar(0, 0, 255), 3, 8, 0 );
 			}
 		}
 

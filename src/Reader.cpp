@@ -109,12 +109,17 @@ void	Reader::findCircles() {
 	circlesCenter.x = (estAnchor[0] - westAnchor[0]) / 2 + westAnchor[0];
 	circlesCenter.y = (southAnchor[1] - northAnchor[1]) / 2 + northAnchor[1];
 
-	double thirdRadius = estAnchor[0] - circlesCenter.x;
+	cv::Point p1(estAnchor[0], estAnchor[1]);
+	cv::Point p2(westAnchor[0], westAnchor[1]);
+	cv::Point diff = p1 - p2;
+	double thirdRadius = sqrt(diff.ddot(diff)) / 2;
 
 	circlesRadius.push_back(thirdRadius + 2 * thirdRadius / 9);
 	circlesRadius.push_back(thirdRadius + 1 * thirdRadius / 9);
 	circlesRadius.push_back(thirdRadius);
 	circlesRadius.push_back(thirdRadius - 1 * thirdRadius / 9);
+
+	startPoint = cv::Point(estAnchor[0], estAnchor[1]);
 }
 
 void	Reader::findPointsNbr() {
@@ -131,9 +136,12 @@ void	Reader::findPointsNbr() {
 }
 
 void	Reader::findPoints() {
-	int step_angle = 360 / pointsNbr;
+	float step_angle = 360 / pointsNbr;
+	float start_angle = atan2(startPoint.y - circlesCenter.y, 
+								startPoint.x - circlesCenter.x);
+	start_angle = start_angle * 180 / PI;
 	for (unsigned int i = 0; i < circlesRadius.size(); i++) {
-		for (int j = 450; j > 90; j -= step_angle) {
+		for (float j = 450 - start_angle; j > 90.f; j -= step_angle) {
 			cv::Point p;
 			p.x = circlesRadius[i] * sin(j * PI / 180) + circlesCenter.x;
 			p.y = circlesRadius[i] * cos(j * PI / 180) + circlesCenter.y;

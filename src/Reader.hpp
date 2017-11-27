@@ -39,6 +39,7 @@ class Reader {
 		double					width;
 		double					height;
 		std::vector<cv::Vec3f>	anchors;
+		cv::Point				startPoint;
 		unsigned int			pointsNbr;
 		cv::Point				circlesCenter;
 		std::vector<double>		circlesRadius;
